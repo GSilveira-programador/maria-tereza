@@ -1,0 +1,322 @@
+/* ========== RESET ========== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; min-height: 100%; }
+body {
+  min-height: 100vh;
+  overflow: hidden; /* quem rola é cada .tela, não o body */
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  color: #fff;
+  background: #070407;
+}
+
+/* ========== FUNDO ========== */
+.background {
+  position: fixed; inset: 0; z-index: -10;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(255,45,105,.18), transparent 28%),
+    radial-gradient(circle at 15% 20%, rgba(255,80,130,.07), transparent 25%),
+    radial-gradient(circle at 85% 80%, rgba(180,30,90,.08), transparent 30%),
+    linear-gradient(135deg, #050305 0%, #10070d 45%, #050305 100%);
+  animation: fundoRespirar 8s ease-in-out infinite alternate;
+}
+.background::before {
+  content: ""; position: absolute; width: 650px; height: 650px;
+  left: 50%; top: 50%; transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,58,115,.10), transparent 68%);
+  filter: blur(30px); pointer-events: none;
+}
+.background::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,.48) 100%);
+}
+@keyframes fundoRespirar { from { transform: scale(1); } to { transform: scale(1.06); } }
+
+/* ========== PARTÍCULAS ========== */
+.particles { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: -1; }
+.particula {
+  position: absolute; bottom: -30px;
+  color: rgba(255,105,145,.45); filter: blur(.2px);
+  animation: subirParticula linear forwards;
+}
+@keyframes subirParticula {
+  0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+  10%  { opacity: .6; }
+  90%  { opacity: .25; }
+  100% { transform: translateY(-110vh) translateX(50px) rotate(180deg); opacity: 0; }
+}
+
+/* ========== TELAS (CORREÇÃO DO SCROLL) ========== */
+.tela {
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  display: flex;                 /* sem align-items:center: centraliza via margin:auto no filho */
+  padding: 40px 30px 80px;
+  overflow-y: auto;              /* a tela rola sozinha quando o conteúdo é maior */
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transform: translateY(25px) scale(.98);
+  transition: opacity .8s ease, transform .8s cubic-bezier(.22,1,.36,1), visibility .8s;
+}
+.tela.ativa {
+  opacity: 1; visibility: visible; pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+/* margin:auto centra quando sobra espaço e deixa rolar do topo quando falta (sem cortar) */
+.conteudo {
+  width: min(760px, 100%);
+  margin: auto;
+  text-align: center;
+  position: relative; z-index: 2;
+}
+
+/* ========== ABERTURA ========== */
+.abertura { animation: entradaInicial 1.2s cubic-bezier(.22,1,.36,1); }
+@keyframes entradaInicial {
+  from { opacity: 0; transform: translateY(30px) scale(.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ========== TEXTOS ========== */
+.pre-titulo {
+  display: block; margin-bottom: 24px; color: #ff9db9;
+  font-size: 12px; font-weight: 500; letter-spacing: 5px;
+  text-transform: uppercase; opacity: .9;
+}
+h1 {
+  margin-bottom: 28px; font-size: clamp(42px, 7vw, 82px);
+  line-height: 1.02; font-weight: 700; letter-spacing: -3px;
+  text-shadow: 0 0 35px rgba(255,60,120,.08);
+}
+h1 span {
+  display: block; margin-top: 8px; color: #ff557f;
+  text-shadow: 0 0 25px rgba(255,70,120,.28), 0 0 60px rgba(255,40,100,.12);
+}
+h2 { margin-bottom: 30px; font-size: clamp(34px, 6vw, 60px); line-height: 1.05; letter-spacing: -2px; }
+.subtitulo { max-width: 620px; margin: 0 auto; color: rgba(255,255,255,.68); font-size: 17px; line-height: 1.8; }
+
+.capitulo {
+  display: block; margin-bottom: 20px; color: #ff789a;
+  font-size: 11px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase;
+}
+.texto { max-width: 650px; margin: 0 auto; }
+.texto p { margin: 14px 0; color: rgba(255,255,255,.70); font-size: 17px; line-height: 1.8; }
+.destaque-texto {
+  color: #ff628a !important; font-size: 28px !important; font-weight: 600;
+  text-shadow: 0 0 25px rgba(255,70,120,.25);
+}
+
+/* ========== BOTÃO ========== */
+.btn-principal, button {
+  position: relative; display: inline-flex; align-items: center; justify-content: center;
+  gap: 10px; margin-top: 38px; padding: 17px 28px;
+  border: 1px solid rgba(255,255,255,.10); border-radius: 999px;
+  background: linear-gradient(135deg, #ff4775, #ff315f);
+  color: #fff; font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer;
+  box-shadow: 0 12px 35px rgba(255,40,90,.22);
+  transition: transform .3s ease, box-shadow .3s ease, filter .3s ease;
+}
+button:hover { transform: translateY(-4px) scale(1.025); filter: brightness(1.08); box-shadow: 0 18px 45px rgba(255,40,90,.35); }
+button:active { transform: translateY(-1px) scale(.99); }
+.btn-coracao { font-size: 14px; animation: pulsar 1.4s ease-in-out infinite; }
+
+@keyframes pulsar { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+
+/* ========== CARD INSTAGRAM / STORY ========== */
+.instagram-card {
+  width: min(390px, 100%); margin: 32px auto 25px; padding: 20px;
+  border-radius: 22px; text-align: left; overflow: hidden;
+  background: linear-gradient(145deg, rgba(255,255,255,.07), rgba(255,255,255,.025));
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 25px 70px rgba(0,0,0,.35);
+  backdrop-filter: blur(18px);
+  animation: aparecerCard .9s cubic-bezier(.22,1,.36,1) both;
+}
+.instagram-header { display: flex; align-items: center; gap: 12px; padding: 16px 18px; border-bottom: 1px solid rgba(255,255,255,.06); }
+.instagram-header .avatar, .avatar {
+  width: 42px; height: 42px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; background: linear-gradient(135deg, #ff557f, #922344);
+  color: #fff; font-weight: 700;
+}
+.instagram-header strong { display: block; color: #fff; font-size: 13px; }
+.instagram-header small { display: block; margin-top: 3px; color: rgba(255,255,255,.42); font-size: 11px; }
+.story-conteudo {
+  min-height: 180px; margin-top: 20px; padding: 30px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border-radius: 16px; text-align: center;
+  background: radial-gradient(circle at center, rgba(255,65,111,.10), transparent 65%);
+}
+.story-conteudo > span { display: block; margin-bottom: 12px; font-size: 28px; }
+.story-icone {
+  width: 58px; height: 58px; margin-bottom: 18px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.08); font-size: 23px;
+  box-shadow: 0 0 35px rgba(255,65,111,.12);
+}
+.story-conteudo p { max-width: 270px; margin: 0; color: rgba(255,255,255,.72); font-size: 14px; line-height: 1.7; }
+@keyframes aparecerCard {
+  from { opacity: 0; transform: translateY(25px) scale(.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ========== CONVERSA ========== */
+.conversa { width: min(430px, 100%); margin: 30px auto; display: flex; flex-direction: column; gap: 12px; text-align: left; }
+.mensagem {
+  max-width: 80%; display: flex; align-items: center; gap: 10px;
+  padding: 13px 16px; border-radius: 18px; font-size: 13px; line-height: 1.5;
+  animation: aparecerMensagem .7s cubic-bezier(.22,1,.36,1) both;
+}
+.mensagem span { display: block; }
+.mensagem.minha {
+  align-self: flex-end; color: #fff; border-bottom-right-radius: 5px;
+  background: linear-gradient(135deg, #ff416f, #c92854);
+  box-shadow: 0 8px 25px rgba(255,50,100,.12);
+}
+.mensagem.dela {
+  align-self: flex-start; color: rgba(255,255,255,.78); border-bottom-left-radius: 5px;
+  background: rgba(255,255,255,.055); border: 1px solid rgba(255,255,255,.07);
+  backdrop-filter: blur(12px);
+}
+.avatar-mini {
+  width: 28px; height: 28px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; background: linear-gradient(135deg, #ff557f, #922344);
+  color: #fff; font-size: 11px; font-weight: bold;
+}
+.mensagem:nth-child(1) { animation-delay: .2s; }
+.mensagem:nth-child(2) { animation-delay: .8s; }
+.mensagem:nth-child(3) { animation-delay: 1.4s; }
+@keyframes aparecerMensagem {
+  from { opacity: 0; transform: translateY(15px) scale(.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ========== PRIMEIRO ENCONTRO ========== */
+.encontro { position: relative; }
+.data-momento {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  margin: 25px 0 10px; color: rgba(255,255,255,.38); font-size: 10px; letter-spacing: 3px;
+  animation: aparecerMomento .8s ease both;
+}
+.data-momento .linha { width: 35px; height: 1px; background: rgba(255,255,255,.16); }
+.encontro-card {
+  width: min(430px, 100%); margin: 30px auto; padding: 22px 18px;
+  display: flex; flex-direction: row; align-items: center; gap: 15px;
+  text-align: left; border-radius: 24px;
+  background: linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.025));
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 25px 70px rgba(0,0,0,.35);
+  backdrop-filter: blur(18px);
+  animation: aparecerEncontro 1s cubic-bezier(.22,1,.36,1) both;
+}
+.icone-local {
+  width: 52px; height: 52px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 18px; font-size: 22px;
+  background: linear-gradient(135deg, rgba(255,65,111,.18), rgba(255,65,111,.05));
+  border: 1px solid rgba(255,65,111,.16);
+  box-shadow: 0 10px 35px rgba(255,65,111,.08);
+}
+.encontro-info > span { display: block; margin-bottom: 7px; color: rgba(255,255,255,.35); font-size: 9px; letter-spacing: 2px; }
+.encontro-info h3 { margin: 0 0 8px; color: #fff; font-size: 16px; font-weight: 500; }
+.encontro-info p { margin: 0; color: rgba(255,255,255,.58); font-size: 12px; line-height: 1.7; }
+.frase-encontro { position: relative; width: min(430px, 100%); margin: 35px auto; text-align: center; }
+.frase-encontro p { margin: 0; color: #fff; font-size: 22px; font-weight: 300; font-style: italic; letter-spacing: .5px; }
+.aspas { position: absolute; color: rgba(255,65,111,.35); font-size: 55px; line-height: 1; }
+.aspas:first-child { left: 15px; top: -15px; }
+.aspas.fechamento { right: 15px; bottom: -30px; }
+@keyframes aparecerMomento { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes aparecerEncontro {
+  from { opacity: 0; transform: translateY(30px) scale(.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ========== CAPÍTULO 05 — E AGORA? ========== */
+.agora-intro { width: min(520px, 100%); margin: 25px auto 35px; text-align: center; }
+.agora-intro p { color: rgba(255,255,255,.65); font-size: 14px; line-height: 1.8; }
+.possibilidades { width: min(500px, 100%); margin: 0 auto 30px; display: flex; flex-direction: column; gap: 12px; }
+.possibilidade {
+  display: flex; align-items: flex-start; gap: 18px; padding: 18px 20px; text-align: left;
+  border-radius: 18px; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.065);
+  transition: transform .3s ease, background .3s ease;
+  animation: aparecerPossibilidade .7s cubic-bezier(.22,1,.36,1) both;
+}
+.possibilidade:nth-child(1) { animation-delay: .15s; }
+.possibilidade:nth-child(2) { animation-delay: .3s; }
+.possibilidade:nth-child(3) { animation-delay: .45s; }
+.possibilidade:hover { transform: translateX(6px); background: rgba(255,255,255,.055); }
+.possibilidade > span { min-width: 28px; color: rgba(255,65,111,.7); font-size: 11px; letter-spacing: 1px; }
+.possibilidade strong { display: block; margin-bottom: 5px; color: #fff; font-size: 14px; font-weight: 500; }
+.possibilidade p { margin: 0; color: rgba(255,255,255,.48); font-size: 11px; line-height: 1.6; }
+.frase-agora {
+  width: min(450px, 100%); margin: 30px auto; padding: 20px; text-align: center;
+  border-top: 1px solid rgba(255,255,255,.07); border-bottom: 1px solid rgba(255,255,255,.07);
+}
+.frase-agora span { color: rgba(255,255,255,.7); font-size: 12px; font-style: italic; line-height: 1.7; }
+@keyframes aparecerPossibilidade { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+
+/* ========== FINAL ========== */
+.final { max-width: 700px; padding-top: 45px; padding-bottom: 60px; }
+.final .capitulo { margin-bottom: 15px; }
+.coracao-grande {
+  margin: 10px auto 18px; color: #ff416f; font-size: 42px; line-height: 1;
+  text-shadow: 0 0 25px rgba(255,65,111,.35);
+  animation: pulsar 2.5s ease-in-out infinite;
+}
+.final h2 { margin-bottom: 30px; font-size: clamp(32px, 6vw, 48px); line-height: 1.12; }
+.final h2 span {
+  color: #ff416f;
+  background: linear-gradient(135deg, #ff6b91, #ff416f);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.mensagem-final { width: min(560px, 100%); margin: 0 auto; text-align: center; }
+.mensagem-final p { margin: 0 auto 20px; color: rgba(255,255,255,.62); font-size: 13px; line-height: 1.9; }
+.mensagem-final .destaque-final { margin: 30px auto; color: #fff; font-size: 17px; font-style: italic; }
+
+/* ========== FOTO ========== */
+.foto-final { width: min(380px, 100%); margin: 35px auto; }
+.foto-real {
+  width: 100%; border-radius: 24px; overflow: hidden; background: #111;
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 25px 70px rgba(0,0,0,.45);
+  animation: aparecerFoto 1.2s cubic-bezier(.22,1,.36,1) both;
+}
+.foto-real img {
+  display: block; width: 100%; height: auto;
+  max-height: 75vh;               /* foto vertical não toma a tela inteira */
+  object-fit: cover; object-position: center 35%;
+}
+@keyframes aparecerFoto {
+  from { opacity: 0; transform: translateY(25px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ========== ENCERRAMENTO ========== */
+.encerramento { margin: 35px auto; text-align: center; }
+.encerramento > span { color: rgba(255,255,255,.7); font-size: 13px; font-style: italic; }
+.mini-coracoes { margin-top: 15px; color: rgba(255,65,111,.65); font-size: 12px; letter-spacing: 3px; }
+.assinatura { display: block; margin-top: 40px; color: rgba(255,255,255,.45); font-size: 12px; line-height: 1.8; }
+.assinatura strong { display: block; color: #fff; font-size: 15px; font-weight: 500; }
+
+/* ========== MOBILE ========== */
+@media (max-width: 600px) {
+  .tela { padding: 24px 20px 70px; }
+  h1 { font-size: 44px; letter-spacing: -2px; }
+  h2 { font-size: 38px; letter-spacing: -1.5px; }
+  .pre-titulo { font-size: 10px; letter-spacing: 4px; }
+  .subtitulo { font-size: 15px; line-height: 1.7; }
+  .texto p { font-size: 15px; line-height: 1.7; }
+  .instagram-card { padding: 16px; }
+  button { max-width: 100%; font-size: 14px; padding: 15px 22px; }
+  .possibilidade { padding: 16px; gap: 12px; }
+  .agora-intro p { font-size: 13px; }
+  .frase-agora { padding: 18px 12px; }
+  .final { padding-top: 25px; }
+  .mensagem-final p { font-size: 12px; line-height: 1.8; }
+  .mensagem-final .destaque-final { font-size: 16px; }
+}
